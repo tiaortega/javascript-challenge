@@ -23,36 +23,50 @@ function filter_data() {
     state_query = document.getElementById('state').value;
     country_query = document.getElementById('country').value;
     shape_query = document.getElementById('shape').value;
-    comment_query = document.getElementById('comment').value;
-
-
-    filtered_data=[];
-
-    if (date_query!="" || city_query!=""){
-        for (let index = 0; index < data.length; index++) {
-            const element = data[index];
-
-            if (date_query!="" && city_query=="" && element['datetime']==date_query) {
-                filtered_data.push(element);
-            }
-            if (city_query!="" && date_query=="" && element['city']==city_query) {
-                filtered_data.push(element);
-            }
-            if (date_query!="" && city_query!="" && element['datetime']==date_query && element['city']==city_query) {
-                filtered_data.push(element);
-            }
-        }
-    }
-    else{
-        filtered_data=data;
-    }
     
+
+
+    filtered_data=[...data];;
+
+
+    for (let index = 0; index < filtered_data.length; index++) {
+        const element = filtered_data[index];
+
+        if (date_query!="" && element['datetime']!=date_query) {
+            filtered_data[index]=-1;
+        }
+        if (city_query!="" && element['city']!=city_query) {
+            filtered_data[index]=-1;
+        }
+        if (state_query!="" && element['state']!=state_query) {
+            filtered_data[index]=-1;
+        }
+        if (country_query!="" && element['country']!=country_query) {
+            filtered_data[index]=-1;
+        }
+        if (shape_query!="" && element['shape']!=shape_query) {
+            filtered_data[index]=-1;
+        }
+
+    }
+
+    
+    output_data=[];
+
+    for (let index = 0; index < filtered_data.length; index++) {
+        const element = filtered_data[index];
+
+        if (element!=-1) {
+            output_data.push(element);
+        }
+
+    };
 
 
     let new_tbody = document.createElement('tbody');
     let old_tbody = document.getElementById('ufo-table').getElementsByTagName('tbody')[0];
     old_tbody.parentNode.replaceChild(new_tbody, old_tbody);
-    put_data(filtered_data);
+    put_data(output_data);
 }
 
 
